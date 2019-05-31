@@ -59,7 +59,16 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Letter Opener Settings
+  # Letter Opener settings
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
+
+  # Bullet settings
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+  end
 end
