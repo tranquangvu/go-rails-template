@@ -55,9 +55,12 @@ gem 'sidekiq'
 gem 'rack-mini-profiler', require: false
 
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails'
+  gem 'dotenv-rails'
+  gem 'rspec-rails', '~> 3.8'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -71,9 +74,14 @@ group :development do
 end
 
 group :test do
+  gem 'simplecov', require: false
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
+  gem 'webmock'
+  gem 'vcr'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
