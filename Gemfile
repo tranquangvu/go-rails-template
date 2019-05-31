@@ -18,6 +18,8 @@ gem 'uglifier', '>= 1.3.0'
 
 # View render
 gem 'slim'
+gem 'simple_form'
+gem 'country_select'
 
 # Front-end
 gem 'turbolinks', '~> 5'
