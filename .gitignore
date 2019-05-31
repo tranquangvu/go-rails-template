@@ -29,3 +29,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore public assets
+/public/assets/
+
+# Ignore .env
+/.env

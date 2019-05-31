@@ -8,8 +8,10 @@ gem 'rails', '~> 5.2.3'
 gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 
-# Database
+# Database and Model
 gem 'pg'
+gem 'aasm'
+gem 'value_objects', git: 'https://github.com/GoldenOwlAsia/value_objects.git'
 
 # Asset pipeline
 gem 'sass-rails', '~> 5.0'
@@ -20,22 +22,39 @@ gem 'uglifier', '>= 1.3.0'
 gem 'slim'
 gem 'simple_form'
 gem 'country_select'
+gem 'kaminari'
+
+# Pdf render
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
+# Xlsx render
+# gem 'axlsx', git: 'https://github.com/randym/axlsx.git'
+# gem 'axlsx_rails'
+
+# Mailer
+gem 'premailer-rails'
 
 # Front-end
 gem 'turbolinks', '~> 5'
 
 # File uploading
-# gem 'mini_magick', '~> 4.8'
+gem 'mini_magick'
+gem 'carrierwave', '~> 1.0'
+gem 'fog-aws'
 
 # Authentication
 # ...
 
 # Background worker
-# gem 'redis', '~> 4.0'
+# gem 'sidekiq-cron', '~> 1.1'
+# gem 'whenever', require: false
+gem 'sidekiq'
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'pry'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -43,6 +62,7 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'letter_opener'
 end
 
 group :test do
