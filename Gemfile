@@ -51,6 +51,9 @@ gem 'fog-aws'
 # gem 'whenever', require: false
 gem 'sidekiq'
 
+# Performance
+gem 'rack-mini-profiler', require: false
+
 group :development, :test do
   gem 'dotenv-rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

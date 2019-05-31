@@ -194,6 +194,8 @@ GEM
     public_suffix (3.1.0)
     puma (3.12.1)
     rack (2.0.7)
+    rack-mini-profiler (1.0.2)
+      rack (>= 1.2.0)
     rack-protection (2.0.5)
       rack
     rack-test (1.1.0)
@@ -321,6 +323,7 @@ DEPENDENCIES
   premailer-rails
   pry-rails
   puma (~> 3.11)
+  rack-mini-profiler
   rails (~> 5.2.3)
   sass-rails (~> 5.0)
   selenium-webdriver
