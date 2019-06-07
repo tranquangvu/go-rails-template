@@ -44,7 +44,7 @@ gem 'carrierwave', '~> 1.0'
 gem 'fog-aws'
 
 # Authentication
-# ...
+gem 'devise'
 
 # Background worker
 # gem 'sidekiq-cron', '~> 1.1'
