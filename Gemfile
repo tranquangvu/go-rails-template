@@ -37,6 +37,8 @@ gem 'premailer-rails'
 
 # Front-end
 gem 'turbolinks', '~> 5'
+gem 'bootstrap', '~> 4.3.1'
+gem 'jquery-rails'
 
 # File uploading
 gem 'mini_magick'
