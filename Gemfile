@@ -37,6 +37,9 @@ gem 'premailer-rails'
 
 # Front-end
 gem 'turbolinks', '~> 5'
+gem 'sprockets', '>= 3.0.0'
+gem 'sprockets-es6'
+gem 'punchbox', git: 'https://github.com/GoldenOwlAsia/punchbox.git'
 gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails'
 
