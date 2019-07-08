@@ -85,7 +85,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'webmock'
   gem 'vcr'
-  gem 'database_cleaner'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
