@@ -6,4 +6,4 @@
 //= require bootstrap-sprockets
 //= require punchbox
 
-//= require_tree ./controllers
+//= require ./views/home

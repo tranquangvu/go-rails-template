@@ -1,4 +1,10 @@
-h1 Home#index
-p Find me in app/views/home/index.html.erb
-
-= link_to 'Sign in', new_user_session_path, class: 'btn', id: 'btn'
+section
+  = link_to 'https://rubyonrails.org', class: 'logo'
+    = image_tag 'rails.svg', alt: 'Ruby On Rails'
+  h1 Yay! You’re on Rails!
+  = image_tag 'welcome.png', alt: 'Welcome', class: 'welcome'
+  p.version
+    | rails_#{Rails::VERSION::STRING} - ruby_#{RUBY_VERSION}
+    br
+    | Template created by&nbsp;
+    = link_to 'GoldenOwl', 'https://www.goldenowl.asia/'
