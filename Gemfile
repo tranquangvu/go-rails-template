@@ -56,8 +56,14 @@ gem 'devise'
 # gem 'whenever', require: false
 gem 'sidekiq'
 
+# Patterns
+gem 'draper'
+
 # Performance
 gem 'rack-mini-profiler', require: false
+
+# 3rd services
+gem 'sentry-raven'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -91,4 +97,3 @@ group :test do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'sentry-raven'
