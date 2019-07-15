@@ -7,17 +7,21 @@ class ApplicationForm
     end
   end
 
-  # Inherited class should define 2 methods like below:
+  # Usage:
+  # Inherited class should define 2 methods `initialize`, `submit`.
   #
+  # class UserRegistrationForm
   #   def initialize(params = {})
-  #     @model = Model.new
+  #     @user = User.new
   #     super(params)
   #
-  #     # other actions here...
+  #     # ...
   #   end
-
+  #
   #   def submit
   #     return false if invalid?
-  #     # other actions here...
+  #
+  #     # ...
   #   end
+  # end
 end

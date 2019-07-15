@@ -3,11 +3,16 @@ class ApplicationService
     new(*args, &block).call
   end
 
-  # Inherited class should define 2 methods:
+  # Usage:
+  # Inherited class should define 2 methods `initialize`, `call`.
   #
+  # class SampleService < ApplicationService
   #   def initialize(*args)
   #   end
 
   #   def call
   #   end
+  # end
+  #
+  # SampleService.call(*args)
 end
