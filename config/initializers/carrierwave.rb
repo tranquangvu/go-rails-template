@@ -13,3 +13,12 @@ CarrierWave.configure do |config|
     config.storage = :file
   end
 end
+
+# This will help increase the speed when testing by disable the ability to creating version of a uploaded file.
+
+if Rails.env.test?
+  CarrierWave.configure do |config|
+    config.storage = :file
+    config.enable_processing = false
+  end
+end
