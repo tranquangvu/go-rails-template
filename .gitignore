@@ -38,3 +38,5 @@
 
 # Ignore coverage
 coverage/**/*
+
+config/database.yml
