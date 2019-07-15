@@ -1,8 +1,7 @@
 require: rubocop-rails
 
 AllCops:
-  TargetRubyVersion: 2.5.3
-  TargetRailsVersion: 5.2.3
+  TargetRubyVersion: 2.4
   Exclude:
     - .gems/**/*
     - bin/**/*

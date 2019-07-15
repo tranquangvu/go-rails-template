@@ -1,0 +1,31 @@
+body[data-punchbox-controller='home'][data-punchbox-action='index'] {
+  section {
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-weight: 300;
+    margin: 2.5rem auto;
+  }
+
+  .logo {
+    margin: 2rem auto 1rem;
+    display: block;
+
+    img {
+      width: 130px;
+      height: 46px;
+    }
+  }
+
+  img.welcome {
+    width: 600px;
+    max-width: 100%;
+  }
+
+  p.version {
+    margin: 1.5rem auto;
+  }
+}
