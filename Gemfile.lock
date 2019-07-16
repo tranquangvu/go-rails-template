@@ -254,6 +254,8 @@ GEM
       pry (>= 0.10.4)
     public_suffix (3.1.0)
     puma (3.12.1)
+    pundit (2.0.1)
+      activesupport (>= 3.0.0)
     rack (2.0.7)
     rack-mini-profiler (1.0.2)
       rack (>= 1.2.0)
@@ -460,6 +462,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.11)
   punchbox!
+  pundit
   rack-mini-profiler
   rails (~> 5.2.3)
   rails-controller-testing
