@@ -3,7 +3,7 @@ class ApplicationQuery
 
   class << self
     def relation_class_name
-      raise NoMethodError, "You must define relation_class_name as class method in #{name} class"
+      raise NotImplementedError, "You must define `relation_class_name` as class method in #{name} class"
     end
 
     def relation_class
@@ -16,7 +16,7 @@ class ApplicationQuery
   end
 
   # Usage:
-  # Inherited class must define relation_class_name as class method, which returns model name by string.
+  # Inherited class must define `relation_class_name` as class method, which returns model name by string.
   #
   # class UserQuery
   #   class << self
