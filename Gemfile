@@ -58,6 +58,7 @@ gem 'sidekiq'
 
 # Patterns
 gem 'draper'
+gem 'pundit'
 
 # Performance
 gem 'rack-mini-profiler', require: false
