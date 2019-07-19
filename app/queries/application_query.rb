@@ -2,15 +2,6 @@ class ApplicationQuery
   attr_reader :relation, :options
   class_attribute :relation_class
 
-  def initialize(*args)
-    @options = args.extract_options!
-    @relation = args.first || self.class.base_relation
-  end
-
-  def call
-    raise NotImplementedError, "You must define `call` as instance method in #{self.class.name} class."
-  end
-
   class << self
     def call(*args)
       new(*args).call
@@ -29,10 +20,20 @@ class ApplicationQuery
     end
   end
 
+  def initialize(*args)
+    @options = args.extract_options!
+    @relation = args.first || self.class.base_relation
+  end
+
+  def call
+    raise NotImplementedError, "You must define `call` as instance method in #{self.class.name} class."
+  end
+
   # Usage:
-  # Inherited class should set relation class by call `query_on` method and define `call` as instance method which returns ActiveRecord::Relation object
+  #   Inherited class should set relation class by call `query_on` method and
+  #   define `call` as instance method which returns ActiveRecord::Relation object
   #
-  # class RecentlyActivatedUsersQuery < Patterns::Query
+  # class RecentlyActivatedUsersQuery < ApplicationQuery
   #   query_on 'User'
   #
   #   def call
