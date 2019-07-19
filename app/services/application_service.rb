@@ -8,15 +8,21 @@ class ApplicationService
   end
 
   # Usage:
-  # Inherited class should define 2 methods `initialize`, `call`.
   #
-  # class SampleService < ApplicationService
-  #   def initialize(*args)
+  # class ActivateUserService < ApplicationService
+  #   attr_reader :user
+  #
+  #   def initialize(user)
+  #     @user = user
   #   end
   #
   #   def call
+  #     user.activate!
+  #     NotificationsMailer.user_activation_notification(user).deliver_later
+  #     user
   #   end
   # end
   #
-  # SampleService.call(*args)
+  # user = User.find(1)
+  # ActivateUserService.call(user)
 end
