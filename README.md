@@ -1,5 +1,6 @@
 # GO Rails Template
-A template to build large scale web applications in Ruby On Rails. Focus on extending, performance and best practices by applying patterns: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decoration, ...
+
+A template to build large scale web applications in Ruby On Rails. Focus on extending, performance and best practices by applying patterns: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decorators, etc.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/GoldenOwlAsia/go_rails_template/master/app/assets/images/welcome.png" alt="react boilerplate banner" width="600" />
@@ -35,11 +36,11 @@ A template to build large scale web applications in Ruby On Rails. Focus on exte
 - Environment variables loading with [dotenv](https://github.com/bkeepers/dotenv)
 - [Sidekiq](https://github.com/mperham/sidekiq) default for Active Job queue adapter
 - [Carrierwave](https://github.com/carrierwaveuploader/carrierwave) file upload (development, test evironments: local file storage - staging, production: AWS S3 fog storage)
-- Full settings for testing application: [RSpec](https://rspec.info/), [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails), [faker](https://github.com/stympy/faker), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [webmock](https://github.com/bblimke/webmock), [vcr](https://github.com/vcr/vcr)
+- Full settings for testing application: [rspec](https://rspec.info/), [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails), [faker](https://github.com/stympy/faker), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [webmock](https://github.com/bblimke/webmock), [vcr](https://github.com/vcr/vcr)
 - Error tracking config in production with Sentry
-- Base class config for common patterns in rails application: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decoration, ...
+- Base class init for common patterns in rails application: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decorators, etc
 
-## Quick start
+## Quick Start
 
 1. Make sure that you have installed ruby, rails, redis and postgresql. Read [this guide](https://gorails.com/setup) to install if you don't have.
 2. Clone this repo using `git clone --depth=1 git@github.com:GoldenOwlAsia/go_rails_template.git <YOUR_PROJECT_NAME>`
@@ -61,8 +62,8 @@ rbenv local 2.6.3
 
 ## Testing
 
-1. Start to run your testing by: `bundle exec rspec`
-2. Check coverage by open `coverage/index.html` in web browser
+1. Start to run your specs by: `bundle exec rspec`
+2. See coverage by open `coverage/index.html` in web browser
 
 
 # Common Patterns
@@ -308,6 +309,15 @@ article = Article.find(params[:id]).decorate
 article.publication_status
 article.published_at
 ```
+
+## Deployment
+
+For deployment, you can use AWS Elastic Beanstalk Service (AWS EB) which have most interesting parts from my experiences:
+- Handles the deployment process, you just need to bundle the app and send to EB then you’re free to do others thing. Don’t need to wait for processing tasks via SSH connection, as result in speed up your development.
+- Handles load balancing, auto-scaling by triggered to the app health monitoring. You can easy to setting up from EB management console.
+- And finally, no additional charge for using EB. If you are using the same resources (EC2, CloudFront, S3, RDS, Route 53, ElasticCache,…) then EB won’t add more charges to your bill.
+
+I have written [a complete guide to deploy rails application to AWS EB](https://github.com/tranquangvu/dev-notes/tree/master/deploys-rails-to-awseb). Please take a look on it.
 
 ## License
 
