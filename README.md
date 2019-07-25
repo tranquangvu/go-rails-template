@@ -1,7 +1,9 @@
 # GO Rails Template
 A template to build large scale web applications in Ruby On Rails. Focus on extending, performance and best practices by applying patterns: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decoration, ...
 
-<img src="https://raw.githubusercontent.com/GoldenOwlAsia/go_rails_template/master/app/assets/images/welcome.png" alt="react boilerplate banner" align="center" width="600" />
+<p align="center">
+  <img src="https://raw.githubusercontent.com/GoldenOwlAsia/go_rails_template/master/app/assets/images/welcome.png" alt="react boilerplate banner" width="600" />
+<p>
 
 <br />
 
@@ -23,7 +25,7 @@ A template to build large scale web applications in Ruby On Rails. Focus on exte
 - View template render by [slim](http://slim-lang.com/)
 - Support Javascript ES6 in Assets Pipeline
 - Page-specific Javascript with [punchbox](https://github.com/GoldenOwlAsia/punchbox)
-- Easier form helpers with simple_form(https://github.com/plataformatec/simple_form)
+- Easier form helpers with [simple_form](https://github.com/plataformatec/simple_form)
 - Pagination with [kaminari](https://github.com/kaminari/kaminari)
 - PDF generator with [wicked_pdf](https://github.com/mileszs/wicked_pdf)
 - Email preview in the browser instead of sending with [letter_opener](https://github.com/ryanb/letter_opener)
@@ -33,7 +35,7 @@ A template to build large scale web applications in Ruby On Rails. Focus on exte
 - Environment variables loading with [dotenv](https://github.com/bkeepers/dotenv)
 - [Sidekiq](https://github.com/mperham/sidekiq) default for Active Job queue adapter
 - [Carrierwave](https://github.com/carrierwaveuploader/carrierwave) file upload (development, test evironments: local file storage - staging, production: AWS S3 fog storage)
-- Full settings for testing application: [RSpec](https://rspec.info/), [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails), faker(https://github.com/stympy/faker), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [webmock](https://github.com/bblimke/webmock), [vcr](https://github.com/vcr/vcr)
+- Full settings for testing application: [RSpec](https://rspec.info/), [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails), [faker](https://github.com/stympy/faker), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [webmock](https://github.com/bblimke/webmock), [vcr](https://github.com/vcr/vcr)
 - Error tracking config in production with Sentry
 - Base class config for common patterns in rails application: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decoration, ...
 
@@ -45,8 +47,8 @@ A template to build large scale web applications in Ruby On Rails. Focus on exte
 4. Install correct ruby version for our project. If you have `rbenv`, use these commands:
 
 ```
-  rbenv install 2.6.3
-  rbenv local 2.6.3
+rbenv install 2.6.3
+rbenv local 2.6.3
 ```
 
 5. Install bundler: `gem install bundler`
@@ -74,26 +76,26 @@ Service objects are commonly used to mitigate problems with model callbacks that
 Defining:
 
 ```
-  class ActivateUserService < ApplicationService
-    attr_reader :user
+class ActivateUserService < ApplicationService
+  attr_reader :user
 
-    def initialize(user)
-      @user = user
-    end
-
-    def call
-      user.activate!
-      NotificationsMailer.user_activation_notification(user).deliver_later
-      user
-    end
+  def initialize(user)
+    @user = user
   end
+
+  def call
+    user.activate!
+    NotificationsMailer.user_activation_notification(user).deliver_later
+    user
+  end
+end
 ```
 
 Usage:
 
 ```
-  user = User.find(params[:id])
-  ActivateUserService.call(user)
+user = User.find(params[:id])
+ActivateUserService.call(user)
 ```
 
 #### Form Objects
@@ -103,35 +105,35 @@ Form objects, just like service objects, are commonly used to mitigate problems 
 Defining:
 
 ```
-  class UserRegistrationForm < ApplicationForm
-    attr_accessor :user, :terms_of_service
+class UserRegistrationForm < ApplicationForm
+  attr_accessor :user, :terms_of_service
 
-    delegate :attributes=, to: :user, prefix: true
+  delegate :attributes=, to: :user, prefix: true
 
-    validates :terms_of_service, acceptance: true
+  validates :terms_of_service, acceptance: true
 
-    def initialize(user, params = {})
-      @user = user
-      super(params)
-    end
-
-    def submit
-      return false if invalid?
-      user.save
-    end
-
-    def persisted?
-      user.persisted?
-    end
+  def initialize(user, params = {})
+    @user = user
+    super(params)
   end
+
+  def submit
+    return false if invalid?
+    user.save
+  end
+
+  def persisted?
+    user.persisted?
+  end
+end
 ```
 
 Usage:
 
 ```
-  user = User.new
-  form = UserRegistrationForm.new(user, permitted_params)
-  form.submit
+user = User.new
+form = UserRegistrationForm.new(user, permitted_params)
+form.submit
 ```
 
 #### Query Objects
@@ -140,30 +142,30 @@ One should consider using query objects pattern when in need to perform complex 
 
 Defining:
 ```
-  class RecentlyActivatedUsersQuery < ApplicationQuery
-    query_on 'User'
+class RecentlyActivatedUsersQuery < ApplicationQuery
+  query_on 'User'
 
-    def call
-      relation.active.where(activated_at: date_range)
-    end
-
-    private
-
-    def date_range
-      options.fetch(:date_range, default_date_range)
-    end
-
-    def default_date_range
-      Date.yesterday.beginning_of_day..Date.current.end_of_day
-    end
+  def call
+    relation.active.where(activated_at: date_range)
   end
+
+  private
+
+  def date_range
+    options.fetch(:date_range, default_date_range)
+  end
+
+  def default_date_range
+    Date.yesterday.beginning_of_day..Date.current.end_of_day
+  end
+end
 ```
 
 Usage:
 ```
-  RecentlyActivatedUsersQuery.call
-  RecentlyActivatedUsersQuery.call(date_range: Date.today.beginning_of_day..Date.today.end_of_day)
-  RecentlyActivatedUsersQuery.call(User.male, date_range: Date.today.beginning_of_day..Date.today.end_of_day)
+RecentlyActivatedUsersQuery.call
+RecentlyActivatedUsersQuery.call(date_range: Date.today.beginning_of_day..Date.today.end_of_day)
+RecentlyActivatedUsersQuery.call(User.male, date_range: Date.today.beginning_of_day..Date.today.end_of_day)
 ```
 
 #### Calculation Objects
@@ -172,43 +174,43 @@ Calculation objects provide a place to calculate simple values (i.e. numeric, ar
 
 Defining:
 ```
-  class AverageHotelDailyRevenueCalculation < ApplicationCalculation
-    def call
-      reservations.sum(:price) / number_of_days_in_year
-    end
-
-    private
-
-    def reservations
-      Reservation.where(
-        date: (beginning_of_year..end_of_year),
-        hotel_id: options[:hotel_id]
-      )
-    end
-
-    def number_of_days_in_year
-      end_of_year.yday
-    end
-
-    def year
-      options[:year] || Date.current.year
-    end
-
-    def beginning_of_year
-      Date.new(year).beginning_of_year
-    end
-
-    def end_of_year
-      Date.new(year).end_of_year
-    end
+class AverageHotelDailyRevenueCalculation < ApplicationCalculation
+  def call
+    reservations.sum(:price) / number_of_days_in_year
   end
+
+  private
+
+  def reservations
+    Reservation.where(
+      date: (beginning_of_year..end_of_year),
+      hotel_id: options[:hotel_id]
+    )
+  end
+
+  def number_of_days_in_year
+    end_of_year.yday
+  end
+
+  def year
+    options[:year] || Date.current.year
+  end
+
+  def beginning_of_year
+    Date.new(year).beginning_of_year
+  end
+
+  def end_of_year
+    Date.new(year).end_of_year
+  end
+end
 ```
 
 Usage:
 ```
-  hotel = current_user.owned_hotel
-  AverageHotelDailyRevenueCalculation.call(hotel_id: hotel.id)
-  AverageHotelDailyRevenueCalculation.call(hotel_id: hotel.id, year: 2018)
+hotel = current_user.owned_hotel
+AverageHotelDailyRevenueCalculation.call(hotel_id: hotel.id)
+AverageHotelDailyRevenueCalculation.call(hotel_id: hotel.id, year: 2018)
 ```
 
 #### Value Objects
@@ -219,33 +221,33 @@ Read more at [value_objects document](https://github.com/GoldenOwlAsia/value_obj
 
 Defining:
 ```
-  class AddressValueObject < ApplicationValueObject
-    attr_accessor :street, :postcode, :city
+class AddressValueObject < ApplicationValueObject
+  attr_accessor :street, :postcode, :city
 
-    validates :postcode, presence: true
-    validates :city, presence: true
-  end
+  validates :postcode, presence: true
+  validates :city, presence: true
+end
 ```
 
 Usage:
 
 ```
-  address = AddressValueObject.new(street: '123 Big Street', city: 'Metropolis')
-  address.valid? # => false
-  address.errors.to_h # => {:postcode=>"can't be blank"}
-  address.postcode = '12345' # => "12345"
-  address.valid? # => true
-  address.errors.to_h # => {}
+address = AddressValueObject.new(street: '123 Big Street', city: 'Metropolis')
+address.valid? # => false
+address.errors.to_h # => {:postcode=>"can't be blank"}
+address.postcode = '12345' # => "12345"
+address.valid? # => true
+address.errors.to_h # => {}
 ```
 
 Usage in Active Record:
 ```
-  class User < ActiveRecord::Base
-    include ValueObjects::ActiveRecord
+class User < ActiveRecord::Base
+  include ValueObjects::ActiveRecord
 
-    value_object :company_addresses, AddressValueObject::Collection
-    value_object :home_address, AddressValueObject
-  end
+  value_object :company_addresses, AddressValueObject::Collection
+  value_object :home_address, AddressValueObject
+end
 ```
 
 #### Policy Objects
@@ -256,22 +258,22 @@ Read more at [pundit document](https://github.com/varvet/pundit).
 
 Defining:
 ```
-  class ArticlePolicy < ApplicationPolicy
-    def create?
-      user.admin?
-    end
-
-    def update?
-      user.admin? && !record.published?
-    end
+class ArticlePolicy < ApplicationPolicy
+  def create?
+    user.admin?
   end
+
+  def update?
+    user.admin? && !record.published?
+  end
+end
 ```
 
 Usage:
 ```
-  @article = Article.find(params[:id])
-  authorize @article, :update?
-  @article.update(article_params)
+@article = Article.find(params[:id])
+authorize @article, :update?
+@article.update(article_params)
 ```
 
 
@@ -283,28 +285,28 @@ Read more at [draper document](https://github.com/drapergem/draper).
 
 Define:
 ```
-  class ArticleDecorator < Draper::Decorator
-    delegate_all
+class ArticleDecorator < Draper::Decorator
+  delegate_all
 
-    def publication_status
-      if published?
-        "Published at #{published_at}"
-      else
-        "Unpublished"
-      end
-    end
-
-    def published_at
-      object.published_at.strftime("%A, %B %e")
+  def publication_status
+    if published?
+      "Published at #{published_at}"
+    else
+      "Unpublished"
     end
   end
+
+  def published_at
+    object.published_at.strftime("%A, %B %e")
+  end
+end
 ```
 
 Usage:
 ```
-  article = Article.find(params[:id]).decorate
-  article.publication_status
-  article.published_at
+article = Article.find(params[:id]).decorate
+article.publication_status
+article.published_at
 ```
 
 ## License
