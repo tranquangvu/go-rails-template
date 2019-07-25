@@ -1,34 +1,312 @@
-# README
+# GO Rails Template
+A template to build large scale web applications in Ruby On Rails. Focus on extending, performance and best practices by applying patterns: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decoration, ...
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+<img src="https://raw.githubusercontent.com/GoldenOwlAsia/go_rails_template/master/app/assets/images/welcome.png" alt="react boilerplate banner" align="center" width="600" />
 
-Things you may want to cover:
-## System dependencies
+<br />
 
-* Ruby version
-  `2.6.3`
+<div align="center">
+  <sub>Created by <a href="https://github.com/tranquangvu">Ben Tran</a> with ❤️</sub>
+</div>
 
-* Rails version
-  `5.2.3'`
+## General Information
 
-* System dependencies
- `Postgresql`
- `Rails`
- `Redis`
+- Ruby version: `ruby 2.6.3`
+- Rails version: `rails 5.2.3`
+- Database: `postgresql`
 
-* Setup local env
-  `cp .env.example .env`
-  `cp config/database.yml.example config/database.yml`
+## Features
 
-* Database creation
-  `rails db:create`
-  `rails db:migrate`
+- Rubocop config
+- Codeclimate config
+- Basic [devise](https://github.com/plataformatec/devise) authentication setup
+- View template render by [slim](http://slim-lang.com/)
+- Support Javascript ES6 in Assets Pipeline
+- Page-specific Javascript with [punchbox](https://github.com/GoldenOwlAsia/punchbox)
+- Easier form helpers with simple_form(https://github.com/plataformatec/simple_form)
+- Pagination with [kaminari](https://github.com/kaminari/kaminari)
+- PDF generator with [wicked_pdf](https://github.com/mileszs/wicked_pdf)
+- Email preview in the browser instead of sending with [letter_opener](https://github.com/ryanb/letter_opener)
+- CSS styled email without the hassle with [premailer-rails](https://github.com/fphilipe/premailer-rails)
+- Annotate rails classes with schema and routes info [annotate_models](https://github.com/ctran/annotate_models)
+- Performance checking in development environment with [bullet](https://github.com/flyerhzm/bullet) and [rack-mini-profiler](https://github.com/MiniProfiler/rack-mini-profiler)
+- Environment variables loading with [dotenv](https://github.com/bkeepers/dotenv)
+- [Sidekiq](https://github.com/mperham/sidekiq) default for Active Job queue adapter
+- [Carrierwave](https://github.com/carrierwaveuploader/carrierwave) file upload (development, test evironments: local file storage - staging, production: AWS S3 fog storage)
+- Full settings for testing application: [RSpec](https://rspec.info/), [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails), faker(https://github.com/stympy/faker), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [webmock](https://github.com/bblimke/webmock), [vcr](https://github.com/vcr/vcr)
+- Error tracking config in production with Sentry
+- Base class config for common patterns in rails application: Service Objects, Form Objects, Query Objects, Calculation Objects, Value Objects, Policy Objects, Decoration, ...
 
-* Database initialization
+## Quick start
 
-* How to run the test suite
-  `bundle exec rspec spec`
+1. Make sure that you have installed ruby, rails, redis and postgresql. Read [this guide](https://gorails.com/setup) to install if you don't have.
+2. Clone this repo using `git clone --depth=1 git@github.com:GoldenOwlAsia/go_rails_template.git <YOUR_PROJECT_NAME>`
+3. Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`
+4. Install correct ruby version for our project. If you have `rbenv`, use these commands:
 
-* Services (job queues, cache servers, search engines, etc.)
-  `bundle exec sidekiq`
+```
+  rbenv install 2.6.3
+  rbenv local 2.6.3
+```
+
+5. Install bundler: `gem install bundler`
+6. Install gems: `bundle install`
+7. Add database config: create `config/database.yml` file (refer from `config/database.yml.example`)
+8. Add environment variables: create `.env` file (refer from `.env.example`)
+9. Run sidekiq (make sure redis service is running): `bundle exec sidekiq`
+10. Start server: `rails s`
+11. Visit `http://localhost:3000` and start your development
+
+## Testing
+
+1. Start to run your testing by: `bundle exec rspec`
+2. Check coverage by open `coverage/index.html` in web browser
+
+
+# Common Patterns
+
+In software engineering, a software design pattern is a general, reusable solution to a commonly occurring problem within a given context in software design. It is not a finished design that can be transformed directly into source or machine code. It is a description or template for how to solve a problem that can be used in many different situations. Design patterns are formalized best practices that the programmer can use to solve common problems when designing an application or system.
+
+#### Service Objects
+
+Service objects are commonly used to mitigate problems with model callbacks that interact with external classes ([read more](https://samuelmullen.com/2013/05/the-problem-with-rails-callbacks/)). Service objects are also useful for handling processes involving multiple steps. E.g. a controller that performs more than one operation on its subject (usually a model instance) is a possible candidate for Extract ServiceObject (or Extract FormObject) refactoring. In many cases service object can be used as scaffolding for [replace method with object refactoring](https://sourcemaking.com/refactoring/replace-method-with-method-object). Some more information on using services can be found in [this article](https://medium.com/selleo/essential-rubyonrails-patterns-part-1-service-objects-1af9f9573ca1).
+
+Defining:
+
+```
+  class ActivateUserService < ApplicationService
+    attr_reader :user
+
+    def initialize(user)
+      @user = user
+    end
+
+    def call
+      user.activate!
+      NotificationsMailer.user_activation_notification(user).deliver_later
+      user
+    end
+  end
+```
+
+Usage:
+
+```
+  user = User.find(params[:id])
+  ActivateUserService.call(user)
+```
+
+#### Form Objects
+
+Form objects, just like service objects, are commonly used to mitigate problems with model callbacks that interact with external classes ([read more](https://samuelmullen.com/2013/05/the-problem-with-rails-callbacks/)). Form objects can be used as wrappers for virtual (with no model representation) or composite (saving multiple models at once) resources. In the latter case this may act as replacement for ActiveRecord::NestedAttributes. In some cases FormObject can be used as scaffolding for [replace method with object refactoring](https://sourcemaking.com/refactoring/replace-method-with-method-object). Some more information on using form objects can be found [in this article](https://medium.com/selleo/essential-rubyonrails-patterns-form-objects-b199aada6ec9).
+
+Defining:
+
+```
+  class UserRegistrationForm < ApplicationForm
+    attr_accessor :user, :terms_of_service
+
+    delegate :attributes=, to: :user, prefix: true
+
+    validates :terms_of_service, acceptance: true
+
+    def initialize(user, params = {})
+      @user = user
+      super(params)
+    end
+
+    def submit
+      return false if invalid?
+      user.save
+    end
+
+    def persisted?
+      user.persisted?
+    end
+  end
+```
+
+Usage:
+
+```
+  user = User.new
+  form = UserRegistrationForm.new(user, permitted_params)
+  form.submit
+```
+
+#### Query Objects
+
+One should consider using query objects pattern when in need to perform complex querying on active record relation. Usually one should avoid using scopes for such purpose. As a rule of thumb, if scope interacts with more than one column and/or joins in other tables, it should be moved to query object. Also whenever a chain of scopes is to be used, one should consider using query object too. Some more information on using query objects can be found in [this article](https://medium.com/selleo/essential-rubyonrails-patterns-part-2-query-objects-4b253f4f4539).
+
+Defining:
+```
+  class RecentlyActivatedUsersQuery < ApplicationQuery
+    query_on 'User'
+
+    def call
+      relation.active.where(activated_at: date_range)
+    end
+
+    private
+
+    def date_range
+      options.fetch(:date_range, default_date_range)
+    end
+
+    def default_date_range
+      Date.yesterday.beginning_of_day..Date.current.end_of_day
+    end
+  end
+```
+
+Usage:
+```
+  RecentlyActivatedUsersQuery.call
+  RecentlyActivatedUsersQuery.call(date_range: Date.today.beginning_of_day..Date.today.end_of_day)
+  RecentlyActivatedUsersQuery.call(User.male, date_range: Date.today.beginning_of_day..Date.today.end_of_day)
+```
+
+#### Calculation Objects
+
+Calculation objects provide a place to calculate simple values (i.e. numeric, arrays, hashes), especially when calculations require interacting with multiple classes, and thus do not fit into any particular one.
+
+Defining:
+```
+  class AverageHotelDailyRevenueCalculation < ApplicationCalculation
+    def call
+      reservations.sum(:price) / number_of_days_in_year
+    end
+
+    private
+
+    def reservations
+      Reservation.where(
+        date: (beginning_of_year..end_of_year),
+        hotel_id: options[:hotel_id]
+      )
+    end
+
+    def number_of_days_in_year
+      end_of_year.yday
+    end
+
+    def year
+      options[:year] || Date.current.year
+    end
+
+    def beginning_of_year
+      Date.new(year).beginning_of_year
+    end
+
+    def end_of_year
+      Date.new(year).end_of_year
+    end
+  end
+```
+
+Usage:
+```
+  hotel = current_user.owned_hotel
+  AverageHotelDailyRevenueCalculation.call(hotel_id: hotel.id)
+  AverageHotelDailyRevenueCalculation.call(hotel_id: hotel.id, year: 2018)
+```
+
+#### Value Objects
+
+The Value Object design pattern encourages simple, small objects (which usually just contain given values), and lets you compare these objects according to a given logic or simply based on specific attributes (and not on their identity).
+
+Read more at [value_objects document](https://github.com/GoldenOwlAsia/value_objects).
+
+Defining:
+```
+  class AddressValueObject < ApplicationValueObject
+    attr_accessor :street, :postcode, :city
+
+    validates :postcode, presence: true
+    validates :city, presence: true
+  end
+```
+
+Usage:
+
+```
+  address = AddressValueObject.new(street: '123 Big Street', city: 'Metropolis')
+  address.valid? # => false
+  address.errors.to_h # => {:postcode=>"can't be blank"}
+  address.postcode = '12345' # => "12345"
+  address.valid? # => true
+  address.errors.to_h # => {}
+```
+
+Usage in Active Record:
+```
+  class User < ActiveRecord::Base
+    include ValueObjects::ActiveRecord
+
+    value_object :company_addresses, AddressValueObject::Collection
+    value_object :home_address, AddressValueObject
+  end
+```
+
+#### Policy Objects
+
+The Policy Objects design pattern is similar to Service Objects, but is responsible for read operations while Service Objects are responsible for write operations. Policy Objects encapsulate complex business rules and can easily be replaced by other Policy Objects with different rules. For example, we can check if a guest user is able to retrieve certain resources using a guest Policy Object. If the user is an admin, we can easily change this guest Policy Object to an admin Policy Object that contains admin rules.
+
+Read more at [pundit document](https://github.com/varvet/pundit).
+
+Defining:
+```
+  class ArticlePolicy < ApplicationPolicy
+    def create?
+      user.admin?
+    end
+
+    def update?
+      user.admin? && !record.published?
+    end
+  end
+```
+
+Usage:
+```
+  @article = Article.find(params[:id])
+  authorize @article, :update?
+  @article.update(article_params)
+```
+
+
+#### Decorators
+
+The Decorator Pattern allows us to add any kind of auxiliary behavior to individual objects without affecting other objects of the same class. This design pattern is widely used to divide functionality across different classes, and is a good alternative to subclasses for adhering to the Single Responsibility Principle.
+
+Read more at [draper document](https://github.com/drapergem/draper).
+
+Define:
+```
+  class ArticleDecorator < Draper::Decorator
+    delegate_all
+
+    def publication_status
+      if published?
+        "Published at #{published_at}"
+      else
+        "Unpublished"
+      end
+    end
+
+    def published_at
+      object.published_at.strftime("%A, %B %e")
+    end
+  end
+```
+
+Usage:
+```
+  article = Article.find(params[:id]).decorate
+  article.publication_status
+  article.published_at
+```
+
+## License
+
+Licensed under the MIT license, see the separate LICENSE.md file.
