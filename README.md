@@ -55,9 +55,10 @@ rbenv local 2.6.3
 6. Install gems: `bundle install`
 7. Add database config: create `config/database.yml` file (refer from `config/database.yml.example`)
 8. Add environment variables: create `.env` file (refer from `.env.example`)
-9. Run sidekiq (make sure redis service is running): `bundle exec sidekiq`
-10. Start server: `rails s`
-11. Visit `http://localhost:3000` and start your development
+9. Database setup: `bundle exec rake db:setup`
+10. Run sidekiq (make sure redis service is running): `bundle exec sidekiq`
+11. Start server: `rails s`
+12. Visit `http://localhost:3000` and start your development
 
 ## Testing
 
