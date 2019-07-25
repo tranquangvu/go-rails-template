@@ -80,7 +80,7 @@ rbenv local 2.6.3
   │   └── stylesheets
   │       └── views
   │       │   ├── home.scss
-  │       │   └── variables.scss│
+  │       │   └── variables.scss
   │       ├── common
   │       │   ├── fonts.scss
   │       │   └── variables.scss
