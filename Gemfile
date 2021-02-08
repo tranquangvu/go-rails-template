@@ -45,7 +45,7 @@ gem 'jquery-rails'
 
 # File uploading
 gem 'mini_magick'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '~> 1.3'
 gem 'fog-aws'
 
 # Authentication
